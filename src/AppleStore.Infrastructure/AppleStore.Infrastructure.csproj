@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\AppleStore.Domain\AppleStore.Domain.csproj" />
     <ProjectReference Include="..\AppleStore.Application\AppleStore.Application.csproj" />
   </ItemGroup>
 
