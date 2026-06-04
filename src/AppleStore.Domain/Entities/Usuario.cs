@@ -11,4 +11,7 @@ public class Usuario
     public string Contrasenia { get; set; } = string.Empty;
 
     public Rol Rol { get; set; }
+
+    public ICollection<Pedido> Pedidos { get; set; }
+        = new List<Pedido>();
 }

@@ -6,6 +6,8 @@ public class Producto
 
     public int Id_Categoria { get; set; }
 
+    public Categoria? Categoria { get; set; }
+
     public string Nombre { get; set; } = string.Empty;
 
     public string Descripcion { get; set; } = string.Empty;
@@ -21,4 +23,7 @@ public class Producto
     public bool Destacado { get; set; }
 
     public bool Activo { get; set; }
+
+    public ICollection<DetallePedido> DetallesPedido { get; set; }
+        = new List<DetallePedido>();
 }
