@@ -6,7 +6,11 @@ public class DetallePedido
 
     public int Id_Producto { get; set; }
 
+    public Producto? Producto { get; set; }
+
     public int Id_Pedido { get; set; }
+
+    public Pedido? Pedido { get; set; }
 
     public int Cantidad { get; set; }
 
