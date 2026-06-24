@@ -1,6 +1,7 @@
 ﻿using AppleStore.Application.Services;
 using AppleStore.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppleStore.API.Controllers;
 
@@ -14,7 +15,7 @@ public class UsuarioController : ControllerBase
     {
         _usuarioService = usuarioService;
     }
-
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
