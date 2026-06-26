@@ -7,6 +7,7 @@ namespace AppleStore.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class UsuarioController : ControllerBase
 {
     private readonly UsuarioService _usuarioService;
@@ -15,13 +16,14 @@ public class UsuarioController : ControllerBase
     {
         _usuarioService = usuarioService;
     }
-    [Authorize]
+    
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _usuarioService.GetAll());
     }
 
+    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {

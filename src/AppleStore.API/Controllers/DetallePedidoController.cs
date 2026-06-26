@@ -1,5 +1,6 @@
 ﻿using AppleStore.Application.Services;
 using AppleStore.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppleStore.API.Controllers;
@@ -16,6 +17,7 @@ public class DetallePedidoController : ControllerBase
     }
 
     // GET todos
+    [Authorize(Roles = "Admin,Cliente")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -24,6 +26,7 @@ public class DetallePedidoController : ControllerBase
     }
 
     // GET por id
+    [Authorize(Roles = "Admin,Cliente")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -36,6 +39,7 @@ public class DetallePedidoController : ControllerBase
     }
 
     // POST crear
+    [Authorize(Roles = "Admin,Cliente")]
     [HttpPost]
     public async Task<IActionResult> Create(DetallePedido detalle)
     {
@@ -43,6 +47,7 @@ public class DetallePedidoController : ControllerBase
         return Ok("Detalle de pedido creado");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public IActionResult Update(DetallePedido detalle)
     {
@@ -50,6 +55,7 @@ public class DetallePedidoController : ControllerBase
         return Ok("Detalle de pedido actualizado");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
