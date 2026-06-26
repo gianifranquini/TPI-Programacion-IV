@@ -58,6 +58,13 @@ builder.Services.AddScoped<PedidoService>();
 builder.Services.AddScoped<DetallePedidoService>();
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<DolarService>();
+
+builder.Services.AddHttpClient<DolarService>(client =>
+{
+    client.BaseAddress =
+        new Uri("https://dolarapi.com/");
+});
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
