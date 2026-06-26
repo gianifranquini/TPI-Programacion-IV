@@ -1,5 +1,6 @@
 ﻿using AppleStore.Application.Services;
 using AppleStore.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppleStore.API.Controllers;
@@ -14,14 +15,16 @@ public class ProductoController : ControllerBase
     {
         _productoService = productoService;
     }
-
+   
+    [Authorize(Roles = "Admin,Cliente")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var productos = await _productoService.ObtenerTodos();
         return Ok(productos);
     }
-
+   
+    [Authorize(Roles = "Admin,Cliente")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -32,7 +35,8 @@ public class ProductoController : ControllerBase
 
         return Ok(producto);
     }
-
+    
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(Producto producto)
     {
@@ -40,6 +44,7 @@ public class ProductoController : ControllerBase
         return Ok("Producto creado correctamente");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public IActionResult Update(Producto producto)
     {
@@ -47,6 +52,7 @@ public class ProductoController : ControllerBase
         return Ok("Producto actualizado correctamente");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

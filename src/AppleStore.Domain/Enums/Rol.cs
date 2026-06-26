@@ -2,6 +2,6 @@
 
 public enum Rol
 {
-    Admin = 1,
-    Cliente = 2
+    Cliente = 0,
+    Admin = 1
 }
