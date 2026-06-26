@@ -1,5 +1,6 @@
 ﻿using AppleStore.Application.Interfaces;
 using AppleStore.Domain.Entities;
+using BCrypt.Net;
 
 namespace AppleStore.Application.Services;
 
@@ -24,6 +25,9 @@ public class UsuarioService
 
     public async Task Create(Usuario usuario)
     {
+        // Hashea la contraseña antes de guardarla
+        usuario.Contrasenia = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasenia);
+
         await _usuarioRepository.AddAsync(usuario);
     }
     public void Update(Usuario usuario)
