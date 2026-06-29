@@ -55,4 +55,21 @@ public class UsuarioController : ControllerBase
         await _usuarioService.Delete(id);
         return Ok("Usuario eliminado");
     }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(Usuario usuario)
+    {
+        // 1. forzar rol cliente por seguridad
+        usuario.Rol = AppleStore.Domain.Enums.Rol.Cliente;
+
+        // 2. hashear contraseña antes de guardar
+        usuario.Contrasenia =
+            BCrypt.Net.BCrypt.HashPassword(usuario.Contrasenia);
+
+        // 3. guardar
+        await _usuarioService.Create(usuario);
+
+        return Ok("Usuario registrado");
+    }
 }

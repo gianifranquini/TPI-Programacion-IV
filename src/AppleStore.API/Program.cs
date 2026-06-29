@@ -2,6 +2,8 @@ using AppleStore.Application.Interfaces;
 using AppleStore.Application.Services;
 using AppleStore.Infrastructure.Persistence;
 using AppleStore.Infrastructure.Repositories;
+using AppleStore.Domain.Entities;
+using AppleStore.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -12,36 +14,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 
-// Obtiene la clave secreta configurada en appsettings.json
+// JWT
 var jwtKey = builder.Configuration["Jwt:Key"];
 
-// Configuración de autenticación usando JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // Parámetros que se usarán para validar el token recibido
         options.TokenValidationParameters =
             new TokenValidationParameters
             {
-                // Verifica que el emisor del token sea válido
                 ValidateIssuer = true,
-
-                // Verifica que el destinatario del token sea válido
                 ValidateAudience = true,
-
-                // Verifica que el token no esté vencido
                 ValidateLifetime = true,
-
-                // Verifica que la firma del token sea correcta
                 ValidateIssuerSigningKey = true,
-
-                // Emisor esperado del token
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
-
-                // Destinatario esperado del token
                 ValidAudience = builder.Configuration["Jwt:Audience"],
-
-                // Clave utilizada para validar la firma del token
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(jwtKey!))
@@ -62,26 +49,47 @@ builder.Services.AddScoped<DolarService>();
 
 builder.Services.AddHttpClient<DolarService>(client =>
 {
-    client.BaseAddress =
-        new Uri("https://dolarapi.com/");
+    client.BaseAddress = new Uri("https://dolarapi.com/");
 });
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Entity Framework
+// DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions =>
-        {
-            sqlOptions.EnableRetryOnFailure();
-        }));
+        sqlOptions => sqlOptions.EnableRetryOnFailure()
+    )
+);
 
 var app = builder.Build();
 
-// Swagger
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var userService = scope.ServiceProvider.GetRequiredService<UsuarioService>();
+
+    var adminExists = await db.Usuarios
+        .AnyAsync(u => u.Nombre == "admin@applestore.com");
+
+    if (!adminExists)
+    {
+        var admin = new Usuario
+        {
+            Nombre = "admin@applestore.com",
+            Contrasenia = "admin123",
+            Rol = Rol.Admin
+        };
+
+        await userService.Create(admin);
+    }
+}
+
+// Middleware
 app.UseSwagger();
 app.UseSwaggerUI();
 
