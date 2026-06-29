@@ -24,7 +24,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Publish project
-        run: dotnet publish ./AppleStore.API/AppleStore.API.csproj -c Release -o publish
+        run: dotnet publish ./src/AppleStore.API/AppleStore.API.csproj -c Release -o publish
 
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v3
