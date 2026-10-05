@@ -1,6 +1,6 @@
 # AppleStore API
 
-API REST desarrollada como proyecto para la materia Programación IV de la Tecnicatura Universitaria en Programación.
+API REST desarrollada como proyecto para la materia Programación IV de la Tecnicatura Universitaria en Programación- UTN.
 
 El proyecto simula el backend de una tienda de productos Apple y permite gestionar productos, categorías, usuarios y pedidos. También cuenta con autenticación mediante JWT, manejo de roles y consumo de una API externa para consultar la cotización del dólar oficial.
 
